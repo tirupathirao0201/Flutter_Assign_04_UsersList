@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:peopleinfo/user_interfaces/homepage.dart';
-import 'package:peopleinfo/user_interfaces/list_of_people.dart';
+import 'package:peopleinfo/providers/people_list.dart';
+import 'package:peopleinfo/user_interfaces/splash_screen.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(ChangeNotifierProvider(
+    create: (context) => PeopleList(),
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -12,14 +16,10 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       title: 'People Info',
-      initialRoute: '/list',
-      routes: {
-        '/': (context) => UserInput(),
-        '/list': (context) => const ListOfPeople()
-      },
       debugShowCheckedModeBanner: false,
+      home: SplashScreen(),
     );
   }
 }

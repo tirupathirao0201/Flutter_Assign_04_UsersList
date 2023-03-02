@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:peopleinfo/common_widgets/user_details_card.dart';
+import 'package:peopleinfo/providers/people_list.dart';
+import 'package:provider/provider.dart';
 
 class ListOfPeople extends StatefulWidget {
-  final List<Map<String,dynamic>> listOfUser=[];
-  
-
-  ListOfPeople({super.key,});
+  const ListOfPeople({super.key});
 
   @override
   State<ListOfPeople> createState() => _ListOfPeopleState();
@@ -15,13 +14,36 @@ class _ListOfPeopleState extends State<ListOfPeople> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: const [
-          UserDetailsCard(userName: "Ram",age: 20,index: 1),
-          UserDetailsCard(userName: "Ram",age: 20,index: 1),
-          UserDetailsCard(userName: "Ram",age: 20,index: 1)
-        ],
-      )
-    );
+        appBar: AppBar(
+          title: const Text("List Of People"),
+          actions: [
+            IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: const Icon(
+                Icons.add,
+                size: 25,
+              ),
+              tooltip: "ADD USER",
+            )
+          ],
+        ),
+        body: Consumer<PeopleList>(
+          builder: (context, value, child) {
+            var temp = value.listOfPeople;
+            List<Widget> widList = [];
+            for (int i = 0; i < temp.length; i++) {
+              widList.add(UserDetailsCard(
+                userName: temp[i]["name"],
+                age: temp[i]["age"],
+                index: 0,
+              ));
+            }
+            return Column(
+              children: widList.isNotEmpty ? widList : [const Text("Empty")],
+            );
+          },
+        ));
   }
 }

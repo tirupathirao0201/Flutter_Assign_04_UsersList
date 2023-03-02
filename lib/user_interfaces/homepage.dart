@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../providers/people_list.dart';
+import './list_of_people.dart';
 
 class UserInput extends StatefulWidget {
   final TextEditingController nameControl = TextEditingController();
@@ -92,9 +95,18 @@ class _UserInputState extends State<UserInput> {
                     padding: const EdgeInsets.symmetric(
                         vertical: 10, horizontal: 50)),
                 onPressed: () {
-                  print(widget.ageControl.text);
-                  print(widget.nameControl.text);
-                  
+                  var peopleListProvider =
+                      Provider.of<PeopleList>(context, listen: false);
+                  peopleListProvider.addPerson(
+                      name: widget.nameControl.text,
+                      age: int.parse(widget.ageControl.text));
+                  widget.ageControl.clear();
+                  widget.nameControl.clear();
+
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const ListOfPeople()));
                 },
                 child: const Text("ADD"),
               )
